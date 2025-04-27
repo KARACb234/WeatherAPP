@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class WindowManager : MonoBehaviour
@@ -123,11 +124,11 @@ public class WindowManager : MonoBehaviour
     }
     public bool TryGetOpenWindow<T>(out WindowBase windowBase) where T : WindowBase
     {
-        foreach (WindowBase window in windowPrefabs)
+        foreach (WindowBase windowInStack in windows)
         {
-            if (window is T)
+            if (windowInStack.GetType() == typeof(T))
             {
-                windowBase = window;
+                windowBase = windowInStack;
                 return true;
             }
         }

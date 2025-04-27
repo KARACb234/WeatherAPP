@@ -8,7 +8,6 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using TMPro;
 using UnityEngine;
-
 public class WorkingWithWeather
 {
     private readonly Dictionary<int, WeatherListOfDay> weatherDays = new Dictionary<int, WeatherListOfDay>();
@@ -23,6 +22,13 @@ public class WorkingWithWeather
     }
     public void ActualizeUi(WeatherListOfDay weatherListOfDay, int day)
     {
+        if (windowUI == null)
+        {
+            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
+            {
+                windowUI = window as WeatherWindowUI;
+            }
+        } 
         windowUI.UpdateDateUI(weatherListOfDay.currentDate);
         windowUI.ShowWeatherPerOneDay(weatherListOfDay);
         CalculatingTheAverageTemperatureForOneDay(day);
@@ -55,6 +61,13 @@ public class WorkingWithWeather
     }
     public void CalculatingTheAverageTemperatureForOneDay(int day)
     {
+            if (windowUI == null)
+            {
+                if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
+                {
+                    windowUI = window as WeatherWindowUI;
+                }
+            }
             List<float> listOfTemperatures = new List<float>();
             double averageTemperature = 0;
             if (weatherDays.TryGetValue(day, out var weather))
@@ -68,11 +81,19 @@ public class WorkingWithWeather
             averageTemperature = averageTemperature / listOfTemperatures.Count;
             averageTemperature = Math.Round(averageTemperature, 1);
             string averageTemperatureText = $"Средняя темперетура за {day} число: {averageTemperature}\n";
-            GetWeatherWindowUI().GetEditionalInformation.text += averageTemperatureText;
+            windowUI.GetEditionalInformation.text += averageTemperatureText;
+            Debug.Log(windowUI.GetEditionalInformation.text);
     }
 
     public void FindingTheMaximumAndMinimumTemperature(int day)
     {
+        if (windowUI == null)
+        {
+            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
+            {
+                windowUI = window as WeatherWindowUI;
+            }
+        }
         List<float> listOfTemperatures = new List<float>();
         if (weatherDays.TryGetValue(day, out var weather))
         {
@@ -83,10 +104,17 @@ public class WorkingWithWeather
         }
         listOfTemperatures.Sort();
         string maximumAndMinimumTemperatureText = $"Минимальная температура: {listOfTemperatures[0]}, максимальная температура: {listOfTemperatures[^1]}\n";
-        GetWeatherWindowUI().GetEditionalInformation.text += maximumAndMinimumTemperatureText;
+        windowUI.GetEditionalInformation.text += maximumAndMinimumTemperatureText;
     }
     public void CountingHoursWithPositiveAndNegativeTemperatures(int day)
     {
+        if (windowUI == null)
+        {
+            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
+            {
+                windowUI = window as WeatherWindowUI;
+            }
+        }
         int HoursWithMinusTemperature = 0;
         int HoursWithPlusTemperature = 0;
         if (weatherDays.TryGetValue(day, out var weather))
@@ -104,28 +132,15 @@ public class WorkingWithWeather
             }
         }
 
-        GetWeatherWindowUI().GetEditionalInformation.text += $"Часы с температурой ниже 0: {HoursWithMinusTemperature}, Часы с температурой 0 и выше: {HoursWithPlusTemperature}";
+        windowUI.GetEditionalInformation.text += $"Часы с температурой ниже 0: {HoursWithMinusTemperature}, Часы с температурой 0 и выше: {HoursWithPlusTemperature}";
     }
 
     public void OpenWindow()
     {
         windowUI = WindowManager.Instance.Show<WeatherWindowUI>() as WeatherWindowUI;
-        Debug.Log(windowUI == null);
         windowUI.Initialize(weatherDays, _hourlyData);
         int firstDay = weatherDays.First().Key;
         WeatherListOfDay weather = weatherDays[firstDay];
         ActualizeUi(weather, firstDay);
-    }
-    private WeatherWindowUI GetWeatherWindowUI()
-    {
-        if (windowUI == null)
-        {
-            Debug.Log(WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out WindowBase w));
-            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out WindowBase window))
-            {
-                windowUI = window as WeatherWindowUI;
-            }
-        }
-        return windowUI;
     }
 }
