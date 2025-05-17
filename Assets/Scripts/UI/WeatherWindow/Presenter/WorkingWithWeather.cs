@@ -14,6 +14,7 @@ public class WorkingWithWeather
     private WeatherWindowUI windowUI;
     private WorkingWithWeather workingWithWeather;
     private HourlyData _hourlyData;
+    private CityData selectedCityData;
 
     public WorkingWithWeather(HourlyData hourlyData)
     {
@@ -21,7 +22,7 @@ public class WorkingWithWeather
         _hourlyData = hourlyData;
     }
     public void ActualizeUi(WeatherListOfDay weatherListOfDay, int day)
-    {
+    { 
         if (windowUI == null)
         {
             if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
@@ -29,7 +30,7 @@ public class WorkingWithWeather
                 windowUI = window as WeatherWindowUI;
             }
         } 
-        windowUI.UpdateDateUI(weatherListOfDay.currentDate);
+        windowUI.UpdateDateUI(weatherListOfDay.currentDate, selectedCityData);
         windowUI.ShowWeatherPerOneDay(weatherListOfDay);
         CalculatingTheAverageTemperatureForOneDay(day);
         FindingTheMaximumAndMinimumTemperature(day);
@@ -131,12 +132,12 @@ public class WorkingWithWeather
                 }
             }
         }
-
         windowUI.GetEditionalInformation.text += $"Часы с температурой ниже 0: {HoursWithMinusTemperature}, Часы с температурой 0 и выше: {HoursWithPlusTemperature}";
     }
 
-    public void OpenWindow()
+    public void OpenWindow(CityData cityData)
     {
+        selectedCityData = cityData;
         windowUI = WindowManager.Instance.Show<WeatherWindowUI>() as WeatherWindowUI;
         windowUI.Initialize(weatherDays, _hourlyData);
         int firstDay = weatherDays.First().Key;

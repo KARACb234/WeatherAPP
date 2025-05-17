@@ -11,17 +11,17 @@ public class CityElementLoader : MonoBehaviour
     private CityElement _cityElement;
     [SerializeField]
     private CityData[] citesData;
-    public void Initialize(Action<float, float> onWeatherWindowOpen)
+    public void Initialize(Action<CityData> onWeatherWindowOpen)
     {
         Load(onWeatherWindowOpen);
     }
 
-    public void Load(Action<float, float> onWeatherWindowOpen)
+    public void Load(Action<CityData> onWeatherWindowOpen)
     {
         foreach (CityData city in citesData)
         {
             CityElement cityElement = Instantiate(_cityElement, contentTransform);
-            cityElement.Initialize(city.GetCountryAndCityName, city.Latitude, city.Longitude, onWeatherWindowOpen);
+            cityElement.Initialize(city, onWeatherWindowOpen);
         }
     }
 }

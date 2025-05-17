@@ -13,18 +13,18 @@ namespace Assets.Scripts
         private readonly WorkingWithWeather weather;
         private WelcomeWindow welcomeWindowUI;
 
-        private async void WeatherLoading(float latitude, float longitude)
+        private async void WeatherLoading(CityData cityData)
         {
             WindowManager.Instance.Show<LoadingWindow>();
-            HourlyData hourlyData =  await weatherUpdate.GetHourlyWeather(latitude, longitude);
+            HourlyData hourlyData =  await weatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude);
             WorkingWithWeather workingWithWeather = new WorkingWithWeather(hourlyData);
-            workingWithWeather.OpenWindow();
+            workingWithWeather.OpenWindow(cityData);
             WindowManager.Instance.HideWindow<LoadingWindow>();
         }
 
-        public void OpenWindow(float latitude, float longitude) 
+        public void OpenWindow(CityData cityData) 
         {
-            WeatherLoading(latitude, longitude);
+            WeatherLoading(cityData);
         }
 
         public void Dispose()

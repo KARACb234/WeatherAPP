@@ -17,9 +17,11 @@ public class DayLoader : MonoBehaviour
     [SerializeField]
     private WeatherWindowUI weatherWindowUI;
     private DaySelectorElement[] daySelectorElements;
-    public void Initialise(Dictionary<int, WeatherListOfDay> weather)
+    private CityData _cityData;
+    public void Initialise(Dictionary<int, WeatherListOfDay> weather, CityData cityData)
     {
         weatherDays = weather;
+        _cityData = cityData;
         LoadDate();
     }
 
@@ -60,7 +62,8 @@ public class DayLoader : MonoBehaviour
         }
     private void OnWeatherUiUpdated(DayButonInfo dayButonInfo)
     {
-        weatherWindowUI.UpdateDateUI(dayButonInfo.GetDate);
+        weatherWindowUI.ClearEditionalInformationText();
+        weatherWindowUI.UpdateDateUI(dayButonInfo.GetDate, _cityData);
         weatherWindowUI.UpdateEditionalInformation(dayButonInfo.GetDate.Day);
     }
     

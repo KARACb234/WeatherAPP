@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,15 +22,19 @@ public class WeatherWindowUI : WindowBase
     private DayLoader dayLoader;
     private Dictionary<int, WeatherListOfDay> weather;
     private WorkingWithWeather workingWithWeather;
+    private CityData _cityData;
+    public CityData GetCityData => _cityData;
     public void Initialize(Dictionary<int, WeatherListOfDay> weather, HourlyData hourlyData)
     {
         this.weather = weather;
         workingWithWeather = new WorkingWithWeather(hourlyData);
     }
-    public void UpdateDateUI(DateTime date)
+    public void UpdateDateUI(DateTime date, CityData cityData)
     {
-        string text = date.ToString("dd MMMM yyyy");
+        string text = date.ToString("dd MMMM yyyy ");
         dayText.text = text;
+        _cityData = cityData;
+        dayText.text += cityData.GetCountryAndCityName;
     }
     public void UpdateEditionalInformation(int day)
     {
@@ -39,7 +44,7 @@ public class WeatherWindowUI : WindowBase
     }
     public void CreateButtons()
     {
-        dayLoader.Initialise(weather);
+        dayLoader.Initialise(weather, _cityData);
         dayLoader.onDayLoaderUpdated += ShowWeatherPerOneDay;
     }
     public void ShowWeatherPerOneDay(WeatherListOfDay weatherListOfDay)
@@ -50,5 +55,9 @@ public class WeatherWindowUI : WindowBase
                 sb.Append($"{weatherListOfDay.currentDate.Day}   {parametre.time.Hour}:00, {parametre.temperature} C°\n");
             }
         _temperatureAndTimeText.text = sb.ToString();
+    }
+    public void ClearEditionalInformationText()
+    {
+        editionalInformation.text = string.Empty;
     }
 }

@@ -13,7 +13,7 @@ public class WelcomeWindow : WindowBase
     private WelcomePresenter welcomePresenter;
     [SerializeField]
     private CityElementLoader cityElementLoader;
-    public Action<float, float> onWeatherWindowOpen = (lat, lon) => {};
+    public Action<CityData> onWeatherWindowOpen = (cityData) => {};
     private void Start()
     {
         welcomePresenter = new WelcomePresenter();

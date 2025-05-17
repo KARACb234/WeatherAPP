@@ -12,22 +12,24 @@ public class CityElement : MonoBehaviour
     private TextMeshProUGUI _latitudeText;
     [SerializeField]
     private TextMeshProUGUI _longitudeText;
-    public Action<float, float> onButtonClicked = delegate { };
+    private CityData _cityData;
+    public Action<CityData> onButtonClicked = delegate { };
     private float _latitude;
     private float _logitude;
 
-    public void Initialize(string countryAndCityNameText, float latitude, float longitude, Action<float ,float> onWeatherWindowOpen)
+    public void Initialize(CityData cityData, Action<CityData> onWeatherWindowOpen)
     {
-        _countryAndCityNameText.text = countryAndCityNameText;
-        _latitudeText.text += latitude.ToString();
-        _longitudeText.text += longitude.ToString();
+        _cityData = cityData;
+        _countryAndCityNameText.text = cityData.GetCountryAndCityName;
+        _latitudeText.text += cityData.Latitude.ToString();
+        _longitudeText.text += cityData.Longitude.ToString();
         onButtonClicked = onWeatherWindowOpen;
-        _latitude = latitude;
-        _logitude = longitude;
+        _latitude = cityData.Latitude;
+        _logitude = cityData.Longitude;
     }
 
     public void OnButtonClicked()
     {
-        onButtonClicked?.Invoke(_latitude, _logitude);
+        onButtonClicked?.Invoke(_cityData);
     }
 }
