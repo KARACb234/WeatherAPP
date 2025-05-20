@@ -16,7 +16,6 @@ namespace Tools
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(url);
-                    UnityEngine.Debug.Log("Успех");
                     response.EnsureSuccessStatusCode();
                     string data = await response.Content.ReadAsStringAsync();
                     return data;

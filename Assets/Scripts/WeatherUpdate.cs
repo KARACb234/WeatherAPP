@@ -15,10 +15,8 @@ public class WeatherUpdate
         string latitudeString  = latitude.ToString(CultureInfo.InvariantCulture);
         string longitudeString  = longitude.ToString(CultureInfo.InvariantCulture);
         string weather_url = string.Format("https://api.open-meteo.com/v1/forecast?latitude={0}&longitude={1}&hourly=temperature_2m", latitudeString, longitudeString);
-        Debug.Log(weather_url);
         var networkLoader = new NetworkLoader();
         var data = await networkLoader.LoadingData(weather_url);
-        Debug.Log(data);
         WeatherData networkData = JsonConvert.DeserializeObject<WeatherData>(data);
         HourlyData hourlyData = networkData.hourly;
         return hourlyData;

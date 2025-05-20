@@ -23,7 +23,6 @@ public class WindowManager : MonoBehaviour
         {
             if (window is T)
             {
-                Debug.Log("открываю окно " + window.GetType());
                 return CreateOrOpen(window);
             }
         }
@@ -103,7 +102,6 @@ public class WindowManager : MonoBehaviour
         {
             if (window is T)
             {
-                Debug.Log("закрываю окно " + window.GetType());
                 return CloseWindow(window);
             }
         }

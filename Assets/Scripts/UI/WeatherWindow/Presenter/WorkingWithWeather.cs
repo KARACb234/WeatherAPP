@@ -44,7 +44,6 @@ public class WorkingWithWeather
         {
             if (DateTime.TryParse(hourlyData.time[i], out var result))
             {
-                Debug.Log(result.ToString());
                 if (weatherDays.ContainsKey(result.Date.Day))
                 {
                     if (weatherDays.TryGetValue(result.Date.Day, out var weather))
@@ -83,7 +82,6 @@ public class WorkingWithWeather
             averageTemperature = Math.Round(averageTemperature, 1);
             string averageTemperatureText = $"Средняя темперетура за {day} число: {averageTemperature}\n";
             windowUI.GetEditionalInformation.text += averageTemperatureText;
-            Debug.Log(windowUI.GetEditionalInformation.text);
     }
 
     public void FindingTheMaximumAndMinimumTemperature(int day)
