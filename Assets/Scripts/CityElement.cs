@@ -20,7 +20,8 @@ public class CityElement : MonoBehaviour
     public void Initialize(CityData cityData, Action<CityData> onWeatherWindowOpen)
     {
         _cityData = cityData;
-        _countryAndCityNameText.text = cityData.GetCountryAndCityName;
+        string cityName = string.Format("{0} {1}", cityData.GetCountryName, cityData.CityName);
+        _countryAndCityNameText.text = cityName;
         _latitudeText.text += cityData.Latitude.ToString();
         _longitudeText.text += cityData.Longitude.ToString();
         onButtonClicked = onWeatherWindowOpen;

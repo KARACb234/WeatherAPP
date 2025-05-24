@@ -14,11 +14,13 @@ public class WelcomeWindow : WindowBase
     [SerializeField]
     private CityElementLoader cityElementLoader;
     public Action<CityData> onWeatherWindowOpen = (cityData) => {};
-    private void Start()
+
+    private async void Start()
     {
         welcomePresenter = new WelcomePresenter();
+        List<CityData> citiesDatas = await WeatherUpdate.GetCityData();
         onWeatherWindowOpen += welcomePresenter.OpenWindow;
-        cityElementLoader.Initialize(onWeatherWindowOpen);
+        cityElementLoader.Initialize(onWeatherWindowOpen, citiesDatas);
     }
     private void Update()
     {

@@ -9,14 +9,14 @@ namespace Assets.Scripts
 {
     public class WelcomePresenter : IDisposable
     {
-        private readonly WeatherUpdate weatherUpdate = new WeatherUpdate();
         private readonly WorkingWithWeather weather;
         private WelcomeWindow welcomeWindowUI;
 
         private async void WeatherLoading(CityData cityData)
         {
             WindowManager.Instance.Show<LoadingWindow>();
-            HourlyData hourlyData =  await weatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude);
+
+            HourlyData hourlyData =  await WeatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude);
             WorkingWithWeather workingWithWeather = new WorkingWithWeather(hourlyData);
             workingWithWeather.OpenWindow(cityData);
             WindowManager.Instance.HideWindow<LoadingWindow>();

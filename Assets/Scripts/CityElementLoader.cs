@@ -9,16 +9,16 @@ public class CityElementLoader : MonoBehaviour
     private Transform contentTransform;
     [SerializeField]
     private CityElement _cityElement;
-    [SerializeField]
-    private CityData[] citesData;
-    public void Initialize(Action<CityData> onWeatherWindowOpen)
+    private List<CityData> _citiesDatas;
+    public void Initialize(Action<CityData> onWeatherWindowOpen, List<CityData> citiesDatas)
     {
+        _citiesDatas = citiesDatas;
         Load(onWeatherWindowOpen);
     }
 
     public void Load(Action<CityData> onWeatherWindowOpen)
     {
-        foreach (CityData city in citesData)
+        foreach (CityData city in _citiesDatas)
         {
             CityElement cityElement = Instantiate(_cityElement, contentTransform);
             cityElement.Initialize(city, onWeatherWindowOpen);

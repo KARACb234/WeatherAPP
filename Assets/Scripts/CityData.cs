@@ -1,16 +1,28 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(fileName = "city" ,menuName = "Create/NewCity")]
-public class CityData : ScriptableObject
+
+public class CityData
 {
-    [SerializeField]
-    private string countryAndCityName;
-    public string GetCountryAndCityName => countryAndCityName;
-    [SerializeField]
+    [JsonProperty("country")]
+    private string _countryName;
+    public string GetCountryName => _countryName;
+    [JsonProperty("city")]
+    private string _cityName;
+    public string CityName => _cityName;
+    [JsonProperty("latitude")]
     private float _latitude;
     public float Latitude => _latitude;
-    [SerializeField]
+    [JsonProperty("longitude")]
     private float _longitude;
     public float Longitude => _longitude;
+    [JsonConstructor]
+    public CityData(string countryName, string cityName, float latitude, float longitude)
+    {
+        _countryName = countryName;
+        _cityName = cityName;
+        _latitude = latitude;
+        _longitude = longitude;
+    }
 }

@@ -44,7 +44,7 @@ public class WeatherWindowUI : WindowBase
         string text = date.ToString("dd MMMM yyyy ");
         dayText.text = text;
         _cityData = cityData;
-        dayText.text += cityData.GetCountryAndCityName;
+        //dayText.text += cityData.GetCountryAndCityName;
     }
     public void UpdateEditionalInformation(int day)
     {
