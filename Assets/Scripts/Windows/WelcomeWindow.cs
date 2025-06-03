@@ -24,6 +24,6 @@ public class WelcomeWindow : WindowBase
     }
     private void Update()
     {
-        timeText.SetText($"Время: {DateTime.Now.ToString("HH:mm:ss")}");
+        timeText.SetText($"Время: {DateTime.Now.ToString("HH:mm")}");
     }
 }
