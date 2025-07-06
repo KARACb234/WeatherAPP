@@ -17,14 +17,4 @@ public class WeatherElement : MonoBehaviour
     {
         get { return _temperature; }
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

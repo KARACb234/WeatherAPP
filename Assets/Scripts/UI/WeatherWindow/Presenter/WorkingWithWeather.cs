@@ -22,14 +22,8 @@ public class WorkingWithWeather
         _hourlyData = hourlyData;
     }
     public void ActualizeUi(WeatherListOfDay weatherListOfDay, int day)
-    { 
-        if (windowUI == null)
-        {
-            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
-            {
-                windowUI = window as WeatherWindowUI;
-            }
-        } 
+    {
+        CheckWindow();
         windowUI.UpdateDateUI(weatherListOfDay.currentDate, selectedCityData);
         windowUI.ShowWeatherPerOneDay(weatherListOfDay);
         CalculatingTheAverageTemperatureForOneDay(day);
@@ -61,14 +55,8 @@ public class WorkingWithWeather
     }
     public void CalculatingTheAverageTemperatureForOneDay(int day)
     {
-            if (windowUI == null)
-            {
-                if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
-                {
-                    windowUI = window as WeatherWindowUI;
-                }
-            }
-            List<float> listOfTemperatures = new List<float>();
+        CheckWindow();
+        List<float> listOfTemperatures = new List<float>();
             double averageTemperature = 0;
             if (weatherDays.TryGetValue(day, out var weather))
             {
@@ -86,13 +74,7 @@ public class WorkingWithWeather
 
     public void FindingTheMaximumAndMinimumTemperature(int day)
     {
-        if (windowUI == null)
-        {
-            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
-            {
-                windowUI = window as WeatherWindowUI;
-            }
-        }
+        CheckWindow();
         List<float> listOfTemperatures = new List<float>();
         if (weatherDays.TryGetValue(day, out var weather))
         {
@@ -107,13 +89,7 @@ public class WorkingWithWeather
     }
     public void CountingHoursWithPositiveAndNegativeTemperatures(int day)
     {
-        if (windowUI == null)
-        {
-            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
-            {
-                windowUI = window as WeatherWindowUI;
-            }
-        }
+        CheckWindow();
         int HoursWithMinusTemperature = 0;
         int HoursWithPlusTemperature = 0;
         if (weatherDays.TryGetValue(day, out var weather))
@@ -141,5 +117,15 @@ public class WorkingWithWeather
         int firstDay = weatherDays.First().Key;
         WeatherListOfDay weather = weatherDays[firstDay];
         ActualizeUi(weather, firstDay);
+    }
+    private void CheckWindow()
+    {
+        if (windowUI == null)
+        {
+            if (WindowManager.Instance.TryGetOpenWindow<WeatherWindowUI>(out var window))
+            {
+                windowUI = window as WeatherWindowUI;
+            }
+        }
     }
 }

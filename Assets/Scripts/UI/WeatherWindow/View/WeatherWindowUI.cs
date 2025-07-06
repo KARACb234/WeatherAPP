@@ -67,14 +67,6 @@ public class WeatherWindowUI : WindowBase
             _weatherElement.Temperature.text = weatherListOfDay.GetWeatherParametres[time].temperature.ToString();
             _weatherElements.Add(weatherElement);
         }
-        //var sb = new StringBuilder();
-        //Debug.Log(1);
-        //foreach (var parametre in weatherListOfDay.GetWeatherParametres)
-        //{
-        //    sb.Append($"{weatherListOfDay.currentDate.Day}   {parametre.time.Hour}:00, {parametre.temperature} C°\n");
-        //}
-        //_temperatureAndTimeText.text = sb.ToString();
-        //Debug.Log(_temperatureAndTimeText);
     }
     public void ClearEditionalInformationText()
     {

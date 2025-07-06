@@ -8,6 +8,8 @@ public class CityElement : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI _countryAndCityNameText;
+    private string _cityName;
+    public string GetCityName => _cityName;
     [SerializeField]
     private TextMeshProUGUI _coordinatesText;
     private CityData _cityData;
@@ -21,6 +23,7 @@ public class CityElement : MonoBehaviour
     {
         _cityData = cityData;
         string cityName = string.Format("{0}, {1}", cityData.GetCountryName, cityData.CityName);
+        _cityName = cityData.CityName;
         _countryAndCityNameText.text = cityName;
         _latitude = cityData.Latitude;
         _logitude = cityData.Longitude;
