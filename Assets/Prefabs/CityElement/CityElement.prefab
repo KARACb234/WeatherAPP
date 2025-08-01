@@ -939,6 +939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _countryAndCityNameText: {fileID: 7612027681574440473}
   _coordinatesText: {fileID: 7366538034137390118}
+  _loadImage: {fileID: 5527640772111288305}
 --- !u!114 &7037272343399385757
 MonoBehaviour:
   m_ObjectHideFlags: 0

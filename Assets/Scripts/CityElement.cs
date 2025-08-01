@@ -18,6 +18,9 @@ public class CityElement : MonoBehaviour
     private float _logitude;
     private string _cityIconId;
     public string CityIconId => _cityIconId;
+    [SerializeField]
+    private LoadImageToRawImage _loadImage;
+    public Action onCityElementReady = delegate { };
 
     public void Initialize(CityData cityData, Action<CityData> onWeatherWindowOpen)
     {
@@ -27,14 +30,20 @@ public class CityElement : MonoBehaviour
         _countryAndCityNameText.text = cityName;
         _latitude = cityData.Latitude;
         _logitude = cityData.Longitude;
-        string coordinates = string.Format("широта: {0} долгота: {1}", _latitude, _logitude);
+        string coordinates = string.Format("пїЅпїЅпїЅпїЅпїЅпїЅ: {0} пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: {1}", _latitude, _logitude);
         _coordinatesText.text = coordinates;
         onButtonClicked = onWeatherWindowOpen;
         _cityIconId = cityData.IconId;
+        _loadImage.Initialize(_cityIconId);
+        _loadImage.DownloadComplete += CityElementReady;
     }
 
     public void OnButtonClicked()
     {
         onButtonClicked?.Invoke(_cityData);
+    }
+    private void CityElementReady()
+    {
+        onCityElementReady?.Invoke();
     }
 }

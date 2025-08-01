@@ -215,10 +215,10 @@ RectTransform:
   m_Father: {fileID: 6334517634215227530}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000061035, y: -351.02368}
-  m_SizeDelta: {x: 1032.6, y: 49.9527}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 34, y: 34}
+  m_SizeDelta: {x: -500, y: 28.258392}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9132346640126631768
 MonoBehaviour:
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8272045706320251771}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 107
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -288,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8272045706320251771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -379,10 +379,10 @@ RectTransform:
   m_Father: {fileID: 7379227101210237747}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5.000061, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3277434613721685905
 GameObject:
@@ -726,6 +726,9 @@ MonoBehaviour:
   timeText: {fileID: 3699461721180923368}
   _cityElementLoader: {fileID: 8385785939374447283}
   _userInput: {fileID: 322473636663139301}
+  progressText: {fileID: 198499491127201381}
+  _progressLine: {fileID: 9132346640126631768}
+  loadingWindow: {fileID: 8617368154212464516}
 --- !u!225 &3189000975506444134
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1174,8 +1177,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48, y: -279}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 31.2594, y: -279}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6356096342373678359
 CanvasRenderer:
@@ -1239,8 +1242,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1310,7 +1313,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4115561330948756775
 CanvasRenderer:
@@ -1340,7 +1343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1609,6 +1612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentTransform: {fileID: 7448504141953173220}
   _cityElement: {fileID: 2023162776306822621, guid: 849b727d82acf134db1a159d6d620460, type: 3}
+  loadedCitiesCount: 0
 --- !u!1 &7965001027117435674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,8 +1646,8 @@ RectTransform:
   m_Father: {fileID: 7379227101210237747}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1675,7 +1679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1771,7 +1775,7 @@ GameObject:
   - component: {fileID: 5608406636168542967}
   - component: {fileID: 7669549624808703896}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Load Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

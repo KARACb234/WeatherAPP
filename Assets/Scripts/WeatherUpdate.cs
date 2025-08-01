@@ -11,16 +11,16 @@ using Assets.Scripts;
 
 public static class WeatherUpdate
 {
-    public static async Task<HourlyData> GetHourlyWeather(float latitude = 37.6173f, float longitude = 55.7558f)
+    private const string KEY = "6b6ed7ce57d546358c5112427251007";
+    public static async Task<WeatherInfo> GetHourlyWeather(float latitude = 37.6173f, float longitude = 55.7558f, int days = 1, string lang = "ru")
     {
         string latitudeString = latitude.ToString(CultureInfo.InvariantCulture);
         string longitudeString = longitude.ToString(CultureInfo.InvariantCulture);
-        string weather_url = string.Format("https://api.open-meteo.com/v1/forecast?latitude={0}&longitude={1}&hourly=temperature_2m", latitudeString, longitudeString);
+        string weather_url = string.Format("http://api.weatherapi.com/v1/forecast.json?key={0}&q={1},{2}&days={3}&lang={4}", KEY, latitude, longitude, days, lang);
         var networkLoader = new NetworkLoader();
-        var weatherData = await networkLoader.LoadingData(weather_url);
-        WeatherData networkData = JsonConvert.DeserializeObject<WeatherData>(weatherData);
-        HourlyData hourlyData = networkData.hourly;
-        return hourlyData;
+        var weatherInfoJson = await networkLoader.LoadingData(weather_url);
+        WeatherInfo weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(weatherInfoJson);
+        return weatherInfo;
     }
     public static async Task<List<CityData>> GetCityData()
     {

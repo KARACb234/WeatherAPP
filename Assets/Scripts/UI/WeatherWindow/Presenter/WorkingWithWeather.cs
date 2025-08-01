@@ -10,18 +10,21 @@ using TMPro;
 using UnityEngine;
 public class WorkingWithWeather
 {
-    private readonly Dictionary<int, WeatherListOfDay> weatherDays = new Dictionary<int, WeatherListOfDay>();
+    private readonly Dictionary<ForecastDayData, WeatherListOfDay> weatherDays = new ();
     private WeatherWindowUI windowUI;
     private WorkingWithWeather workingWithWeather;
-    private HourlyData _hourlyData;
+    private ForecastData _forecastData;
     private CityData selectedCityData;
 
-    public WorkingWithWeather(HourlyData hourlyData)
+    public WorkingWithWeather(ForecastData forecastData)
     {
-        CreateTemperatureAndTime(hourlyData);
-        _hourlyData = hourlyData;
+        for (int i = 0; i < forecastData.forecastday.Length; i++)
+        {
+            CreateTemperatureAndTime(forecastData.forecastday[i]);
+        }
+        _forecastData = forecastData;
     }
-    public void ActualizeUi(WeatherListOfDay weatherListOfDay, int day)
+    public void ActualizeUi(WeatherListOfDay weatherListOfDay, ForecastDayData day)
     {
         CheckWindow();
         windowUI.UpdateDateUI(weatherListOfDay.currentDate, selectedCityData);
@@ -32,28 +35,26 @@ public class WorkingWithWeather
         windowUI.CreateButtons();
     }
 
-    public void CreateTemperatureAndTime(HourlyData hourlyData)
+    public void CreateTemperatureAndTime(ForecastDayData forecastDayData)
     {
-        for (int i = 0; i < hourlyData.temperature_2m.Length; i++)
+        for (int i = 0; i < forecastDayData.hour.Length; i++)
         {
-            if (DateTime.TryParse(hourlyData.time[i], out var result))
-            {
-                if (weatherDays.ContainsKey(result.Date.Day))
+                if (weatherDays.ContainsKey(forecastDayData))
                 {
-                    if (weatherDays.TryGetValue(result.Date.Day, out var weather))
+                    if (weatherDays.TryGetValue(forecastDayData, out var weather))
                     {
-                        weather.AddWeather(result, hourlyData.temperature_2m[i]);
+                    weather.AddWeather(forecastDayData.hour[i].time, forecastDayData.hour[i].temp_c);
                     }
                 }
                 else
                 {
-                    WeatherListOfDay weather = new WeatherListOfDay(result.Date);
-                    weatherDays.Add(result.Date.Day, weather);
+                    WeatherListOfDay weather = new WeatherListOfDay(forecastDayData.date);
+                    weatherDays.Add(forecastDayData, weather);
                 }
-            }
+            
         }
     }
-    public void CalculatingTheAverageTemperatureForOneDay(int day)
+    public void CalculatingTheAverageTemperatureForOneDay(ForecastDayData day)
     {
         CheckWindow();
         List<float> listOfTemperatures = new List<float>();
@@ -68,11 +69,11 @@ public class WorkingWithWeather
             }
             averageTemperature = averageTemperature / listOfTemperatures.Count;
             averageTemperature = Math.Round(averageTemperature, 1);
-            string averageTemperatureText = $"Средняя темперетура за {day} число: {averageTemperature}\n";
+            string averageTemperatureText = $"РЎСЂРµРґРЅСЏСЏ С‚РµРјРїРµСЂР°С‚СѓСЂР° Р·Р° {day.date.Day} С‡РёСЃР»Рѕ: {averageTemperature} \n";
             windowUI.GetEditionalInformation.text += averageTemperatureText;
     }
 
-    public void FindingTheMaximumAndMinimumTemperature(int day)
+    public void FindingTheMaximumAndMinimumTemperature(ForecastDayData day)
     {
         CheckWindow();
         List<float> listOfTemperatures = new List<float>();
@@ -84,10 +85,10 @@ public class WorkingWithWeather
             }
         }
         listOfTemperatures.Sort();
-        string maximumAndMinimumTemperatureText = $"Минимальная температура: {listOfTemperatures[0]}, максимальная температура: {listOfTemperatures[^1]}\n";
+        string maximumAndMinimumTemperatureText = $"РњР°РєСЃРёРјР°Р»СЊРЅР°СЏ С‚РµРјРїРµСЂР°С‚СѓСЂР°: {listOfTemperatures[0]}, РјРёРЅРёРјР°Р»СЊРЅР°СЏ С‚РµРјРїРµСЂР°С‚СѓСЂ: {listOfTemperatures[^1]} \n";
         windowUI.GetEditionalInformation.text += maximumAndMinimumTemperatureText;
     }
-    public void CountingHoursWithPositiveAndNegativeTemperatures(int day)
+    public void CountingHoursWithPositiveAndNegativeTemperatures(ForecastDayData day)
     {
         CheckWindow();
         int HoursWithMinusTemperature = 0;
@@ -106,17 +107,19 @@ public class WorkingWithWeather
                 }
             }
         }
-        windowUI.GetEditionalInformation.text += $"Часы с температурой ниже 0: {HoursWithMinusTemperature}, Часы с температурой 0 и выше: {HoursWithPlusTemperature}";
+        windowUI.GetEditionalInformation.text += $"С‡Р°СЃС‹ СЃ С‚РµРјРїРµСЂР°С‚СѓСЂРѕР№ РЅРёР¶Рµ 0: {HoursWithMinusTemperature}, С‡Р°СЃС‹ СЃ С‚РµРјРїРµСЂР°С‚СѓСЂРѕР№ РІС‹С€Рµ 0: {HoursWithPlusTemperature}";
     }
 
     public void OpenWindow(CityData cityData)
     {
-        selectedCityData = cityData;
-        windowUI = WindowManager.Instance.Show<WeatherWindowUI>() as WeatherWindowUI;
-        windowUI.Initialize(weatherDays, _hourlyData);
-        int firstDay = weatherDays.First().Key;
-        WeatherListOfDay weather = weatherDays[firstDay];
-        ActualizeUi(weather, firstDay);
+        for (int i = 0; i < weatherDays.Count; i++)
+        {
+            selectedCityData = cityData;
+            windowUI = WindowManager.Instance.Show<WeatherWindowUI>() as WeatherWindowUI;
+            windowUI.Initialize(weatherDays, _forecastData);
+            WeatherListOfDay weather = weatherDays[_forecastData.forecastday[i]];
+            ActualizeUi(weather, _forecastData.forecastday[i]);
+        }
     }
     private void CheckWindow()
     {

@@ -19,12 +19,13 @@ public class WindowBase : MonoBehaviour
     }
     public virtual void Show()
     {
+        gameObject.SetActive(true);
         _canvasGroup.DOFade(1, SHOW_DURATION);
         _isWindowOpen = true;
     }
     public virtual void Hide()
     {
         _isWindowOpen = false;
-        _canvasGroup.DOFade(0, SHOW_DURATION);
+        _canvasGroup.DOFade(0, SHOW_DURATION).OnComplete((() => { gameObject.SetActive(false); }));
     }
 }

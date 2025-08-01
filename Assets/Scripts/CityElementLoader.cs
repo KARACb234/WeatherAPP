@@ -10,8 +10,11 @@ public class CityElementLoader : MonoBehaviour
     [SerializeField]
     private CityElement _cityElement;
     private List<CityData> _citiesDatas;
+    public List<CityData> CitiesDatas => _citiesDatas;
     private List<CityElement> _citiesElements = new List<CityElement>();
     public List<CityElement> CitiesElements => _citiesElements;
+    public int loadedCitiesCount;
+    public Action<int> onLoadedCitiesCountChanged;
     public void Initialize(Action<CityData> onWeatherWindowOpen, List<CityData> citiesDatas)
     {
         _citiesDatas = citiesDatas;
@@ -25,6 +28,13 @@ public class CityElementLoader : MonoBehaviour
             CityElement cityElement = Instantiate(_cityElement, contentTransform);
             cityElement.Initialize(city, onWeatherWindowOpen);
             _citiesElements.Add(cityElement);
+            cityElement.onCityElementReady += IncreasingLoadedCities;
         }
+    }
+
+    private void IncreasingLoadedCities()
+    {
+        loadedCitiesCount += 1;
+        onLoadedCitiesCountChanged.Invoke(loadedCitiesCount);
     }
 }

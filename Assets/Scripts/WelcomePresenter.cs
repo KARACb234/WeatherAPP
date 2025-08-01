@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class WelcomePresenter : IDisposable
+    public class WelcomePresenter
     {
         private readonly WorkingWithWeather weather;
         private WelcomeWindow welcomeWindowUI;
+        private const int DAYCOUNT = 3;
 
         private async void WeatherLoading(CityData cityData)
         {
             WindowManager.Instance.Show<LoadingWindow>();
 
-            HourlyData hourlyData =  await WeatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude);
-            WorkingWithWeather workingWithWeather = new WorkingWithWeather(hourlyData);
+            WeatherInfo weatherInfo =  await WeatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude, DAYCOUNT);
+            WorkingWithWeather workingWithWeather = new WorkingWithWeather(weatherInfo.forecast);
             workingWithWeather.OpenWindow(cityData);
             WindowManager.Instance.HideWindow<LoadingWindow>();
         }
@@ -25,11 +26,6 @@ namespace Assets.Scripts
         public void OpenWindow(CityData cityData) 
         {
             WeatherLoading(cityData);
-        }
-
-        public void Dispose()
-        {
-// welcomeWindowUI.onWeatherButtonClicked -= WeatherLoading;
         }
     }
 }

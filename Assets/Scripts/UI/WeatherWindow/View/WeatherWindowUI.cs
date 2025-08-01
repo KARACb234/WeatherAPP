@@ -19,7 +19,7 @@ public class WeatherWindowUI : WindowBase
     public TextMeshProUGUI GetEditionalInformation => editionalInformation;
     [SerializeField]
     private DayLoader dayLoader;
-    private Dictionary<int, WeatherListOfDay> weather;
+    private Dictionary<ForecastDayData,WeatherListOfDay> weather;
     private WorkingWithWeather workingWithWeather;
     private CityData _cityData;
     [SerializeField]
@@ -28,16 +28,16 @@ public class WeatherWindowUI : WindowBase
     private Transform controlerTransform;
     private Dictionary<string, int> possibleTimeOfDay = new Dictionary<string, int>()
     {
-        { "Утро", 7 },
-        { "День", 14},
-        { "Вечер", 19},
-        { "Ночь", 2 }
+        { "РЈС‚СЂРѕ", 7 },
+        { "Р”РµРЅСЊ", 14},
+        { "Р’РµС‡РµСЂ", 19},
+        { "РќРѕС‡СЊ", 2 }
     };
     private List<WeatherElement> _weatherElements = new List<WeatherElement>();
-    public void Initialize(Dictionary<int, WeatherListOfDay> weather, HourlyData hourlyData)
+    public void Initialize(Dictionary<ForecastDayData, WeatherListOfDay> weather, ForecastData forecastData)
     {
         this.weather = weather;
-        workingWithWeather = new WorkingWithWeather(hourlyData);
+        workingWithWeather = new WorkingWithWeather(forecastData);
     }
     public void UpdateDateUI(DateTime date, CityData cityData)
     {
@@ -46,7 +46,7 @@ public class WeatherWindowUI : WindowBase
         _cityData = cityData;
         //dayText.text += cityData.GetCountryAndCityName;
     }
-    public void UpdateEditionalInformation(int day)
+    public void UpdateEditionalInformation(ForecastDayData day)
     {
         workingWithWeather.CalculatingTheAverageTemperatureForOneDay(day);
         workingWithWeather.FindingTheMaximumAndMinimumTemperature(day);
@@ -79,5 +79,10 @@ public class WeatherWindowUI : WindowBase
             Destroy(weatherElement.gameObject);
         }
         _weatherElements.Clear();
+    }
+
+    public void CloseWindow()
+    {
+        WindowManager.Instance.CloseWindow(this);
     }
 }

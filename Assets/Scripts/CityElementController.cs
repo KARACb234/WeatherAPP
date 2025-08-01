@@ -17,11 +17,10 @@ public class CityElementController
     {
         _cityElements = cityElements;
         _cityElementsAmount = _cityElements.Count;
-        Debug.Log(_cityElementsAmount);
     }
     public void Refresh(string userInput)
     {
-        string inputText = Regex.Replace(userInput, @"[^a-z0-9à-ÿ¸\s]", string.Empty, RegexOptions.IgnoreCase).ToLower();
+        string inputText = Regex.Replace(userInput, @"[^a-z0-9?-??\s]", string.Empty, RegexOptions.IgnoreCase).ToLower();
         if (userInput.Length == 0)
         {
             foreach (CityElement cityElement in _cityElements)
