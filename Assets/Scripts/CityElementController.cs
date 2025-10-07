@@ -10,17 +10,15 @@ using UnityEngine.UI;
 public class CityElementController
 {
     private List<CityElement> _cityElements;
-    private int _cityElementsAmount;
     private int _downloadedCityElementsAmount;
 
     public CityElementController(List<CityElement> cityElements)
     {
         _cityElements = cityElements;
-        _cityElementsAmount = _cityElements.Count;
     }
     public void Refresh(string userInput)
     {
-        string inputText = Regex.Replace(userInput, @"[^a-z0-9?-??\s]", string.Empty, RegexOptions.IgnoreCase).ToLower();
+        //string inputText = Regex.Replace(userInput, @"[^a-z0-9?-??\s]", string.Empty, RegexOptions.IgnoreCase).ToLower();
         if (userInput.Length == 0)
         {
             foreach (CityElement cityElement in _cityElements)

@@ -1,10 +1,7 @@
 using Assets.Scripts;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using JsonData;
-using UnityEditor.Build;
 using UnityEngine;
 
 public class DayLoader : MonoBehaviour
@@ -38,7 +35,6 @@ public class DayLoader : MonoBehaviour
                 element.Initialisation(i, day);
                 element.onButtonClicked += OnDayLoaderUpdated;
                 element.onButtonClicked += OnSelectButon;
-                element.onButtonClicked += OnWeatherUiUpdated;
                 daySelectorElements[i] = element;
                 i++;
         }
@@ -74,12 +70,6 @@ public class DayLoader : MonoBehaviour
             }
             onDayLoaderUpdated.Invoke(day);
         }
-    private void OnWeatherUiUpdated(DayButonInfo dayButonInfo)
-    {
-        weatherWindowUI.ClearEditionalInformationText();
-        weatherWindowUI.UpdateDateUI(dayButonInfo.GetForecastForecastDayData.date, _cityData);
-        weatherWindowUI.UpdateEditionalInformation(dayButonInfo.GetForecastForecastDayData);
-    }
 
     private void SelectFirstDay()
     {

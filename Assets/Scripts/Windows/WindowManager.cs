@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class WindowManager : MonoBehaviour
@@ -26,7 +24,7 @@ public class WindowManager : MonoBehaviour
                 return CreateOrOpen(window);
             }
         }
-        throw new System.ArgumentException($"Окно не добавлено в windowPrefabs: {typeof(T).Name}");
+        throw new System.ArgumentException($"пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ windowPrefabs: {typeof(T).Name}");
     }
     private WindowBase CreateOrOpen(WindowBase windowBase)
     {
@@ -59,7 +57,7 @@ public class WindowManager : MonoBehaviour
                 return windowInStack;
             }
         }
-        throw new System.ArgumentException("Окно не найдено");
+        throw new System.ArgumentException("пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
     private bool HasWindowInStack(WindowBase window)
     {
@@ -105,7 +103,7 @@ public class WindowManager : MonoBehaviour
                 return CloseWindow(window);
             }
         }
-        throw new System.ArgumentException($"Окно не добавлено в windowPrefabs: {typeof(T).Name}");
+        throw new System.ArgumentException($"пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ windowPrefabs: {typeof(T).Name}");
     }
 
     public WindowBase CloseWindow(WindowBase window)
@@ -118,7 +116,7 @@ public class WindowManager : MonoBehaviour
                 return windowInStack;
             }
         }
-        throw new System.ArgumentException("Окно не найдено");
+        throw new System.ArgumentException("пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
     public bool TryGetOpenWindow<T>(out WindowBase windowBase) where T : WindowBase
     {

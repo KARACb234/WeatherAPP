@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -18,8 +19,12 @@ namespace Assets.Scripts
             WindowManager.Instance.Show<LoadingWindow>();
 
             WeatherInfo weatherInfo =  await WeatherUpdate.GetHourlyWeather(cityData.Latitude, cityData.Longitude, DAYCOUNT);
-            WorkingWithWeather workingWithWeather = new WorkingWithWeather(weatherInfo.forecast);
-            workingWithWeather.OpenWindow(cityData);
+            WeatherConfig.current  = weatherInfo.current;
+            WeatherConfig.forecast  = weatherInfo.forecast;
+            WeatherConfig.location = weatherInfo.location;
+            WeatherConfig.Initialised = true;
+            WorkingWithWeather workingWithWeather = new WorkingWithWeather();
+            workingWithWeather.OpenWindow();
             WindowManager.Instance.HideWindow<LoadingWindow>();
         }
 

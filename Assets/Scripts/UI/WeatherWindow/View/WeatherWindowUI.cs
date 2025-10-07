@@ -1,85 +1,67 @@
 using Assets.Scripts;
 using JsonData;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using TMPro;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer.Internal;
-using UnityEditor;
+using UI.HoursElement;
+using UI.HoursElementScrol;
 using UnityEngine;
 
 public class WeatherWindowUI : WindowBase
 {
     [SerializeField]
-    private TextMeshProUGUI dayText;
+    private TextMeshProUGUI curentTemperatureText;
     [SerializeField]
-    private TextMeshProUGUI editionalInformation;
-    public TextMeshProUGUI GetEditionalInformation => editionalInformation;
+    private TextMeshProUGUI fellingAsText;
+    [SerializeField]
+    private TextMeshProUGUI isCloudText;
+    [SerializeField]
+    private TextMeshProUGUI _pressureText;
+    [SerializeField]
+    private TextMeshProUGUI avghumidityText;
     [SerializeField]
     private DayLoader dayLoader;
-    private Dictionary<ForecastDayData,WeatherListOfDay> weather;
-    private WorkingWithWeather workingWithWeather;
     private CityData _cityData;
     [SerializeField]
-    private WeatherElement _weatherElement;
+    private TextMeshProUGUI _windKph;
     [SerializeField]
     private Transform controlerTransform;
-    private Dictionary<string, int> possibleTimeOfDay = new Dictionary<string, int>()
+    [SerializeField]
+    private LoadImageToRawImage loadImageToRawImage;
+    [SerializeField]
+    private WeatherByHourView _weatherByHourView;
+    private WeatherByHourPresenter _weatherByHourPresenter;
+    private HourElementsController _hourElementsController;
+    [SerializeField]
+    private HourElementCreator _hourElementCreator;
+    [SerializeField] 
+    private Transform _hourElementsScrol;
+    public void Initialize()
     {
-        { "Утро", 7 },
-        { "День", 14},
-        { "Вечер", 19},
-        { "Ночь", 2 }
-    };
-    private List<WeatherElement> _weatherElements = new List<WeatherElement>();
-    public void Initialize(Dictionary<ForecastDayData, WeatherListOfDay> weather, ForecastData forecastData)
-    {
-        this.weather = weather;
-        workingWithWeather = new WorkingWithWeather(forecastData);
+        ShowInformatoinPerCureentDay();
+        WeatherByHourPresenter weatherByHourPresenter = new WeatherByHourPresenter(_weatherByHourView);
+        _weatherByHourPresenter = weatherByHourPresenter;
+        HourElementsController hourElementsController = new HourElementsController(_hourElementsScrol, _hourElementCreator);
+        _hourElementsController = hourElementsController;
     }
-    public void UpdateDateUI(DateTime date, CityData cityData)
+
+    private void OnDestroy()
     {
-        string text = date.ToString("dd MMMM yyyy ");
-        dayText.text = text;
-        _cityData = cityData;
-        //dayText.text += cityData.GetCountryAndCityName;
+        _weatherByHourPresenter.Destroy();
     }
-    public void UpdateEditionalInformation(ForecastDayData day)
+    public void ShowInformatoinPerCureentDay()
     {
-        workingWithWeather.CalculatingTheAverageTemperatureForOneDay(day);
-        workingWithWeather.FindingTheMaximumAndMinimumTemperature(day);
-        workingWithWeather.CountingHoursWithPositiveAndNegativeTemperatures(day);
+        var day = WeatherConfig.current;
+        curentTemperatureText.text = day.tempC.ToString();
+        fellingAsText.text = $"Ощущается как {day.feelslike_c.ToString()} °C";
+        isCloudText.text = day.condition.text;
+        _pressureText.text = day.pressure_mb.ToString();
+        _windKph.text = $"{day.wind_kph.ToString()}Км/ч";
+        avghumidityText.text = $"{day.humidity.ToString()}%";
+        string iconURL = day.condition.icon.Substring(2);
+        loadImageToRawImage.Initialize(iconURL);
     }
-    public void CreateButtons()
-    {
-        dayLoader.Initialise(weather, _cityData);
-        dayLoader.onDayLoaderUpdated += ShowWeatherPerOneDay;
-    }
-    public void ShowWeatherPerOneDay(WeatherListOfDay weatherListOfDay)
-    {
-        ClearMainInformation();
-        foreach (var (dayTime, time) in possibleTimeOfDay)
-        {
-            WeatherElement weatherElement = Instantiate(_weatherElement, controlerTransform);
-            _weatherElement.TimeOfDay.text = dayTime;
-            _weatherElement.Temperature.text = weatherListOfDay.GetWeatherParametres[time].temperature.ToString();
-            _weatherElements.Add(weatherElement);
-        }
-    }
-    public void ClearEditionalInformationText()
-    {
-        editionalInformation.text = string.Empty;
-    }
-    public void ClearMainInformation()
-    {
-        foreach(var weatherElement in _weatherElements)
-        {
-            Destroy(weatherElement.gameObject);
-        }
-        _weatherElements.Clear();
-    }
+    
 
     public void CloseWindow()
     {

@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.Serialization;
 
 public class CityElement : MonoBehaviour
 {
@@ -11,11 +10,9 @@ public class CityElement : MonoBehaviour
     private string _cityName;
     public string GetCityName => _cityName;
     [SerializeField]
-    private TextMeshProUGUI _coordinatesText;
+    private TextMeshProUGUI _CountryNameText;
     private CityData _cityData;
     public Action<CityData> onButtonClicked = delegate { };
-    private float _latitude;
-    private float _logitude;
     private string _cityIconId;
     public string CityIconId => _cityIconId;
     [SerializeField]
@@ -25,16 +22,13 @@ public class CityElement : MonoBehaviour
     public void Initialize(CityData cityData, Action<CityData> onWeatherWindowOpen)
     {
         _cityData = cityData;
-        string cityName = string.Format("{0}, {1}", cityData.GetCountryName, cityData.CityName);
+        string cityName = cityData.CityName;
         _cityName = cityData.CityName;
         _countryAndCityNameText.text = cityName;
-        _latitude = cityData.Latitude;
-        _logitude = cityData.Longitude;
-        string coordinates = string.Format("������: {0} �������: {1}", _latitude, _logitude);
-        _coordinatesText.text = coordinates;
+        _CountryNameText.text = cityData.GetCountryName;
         onButtonClicked = onWeatherWindowOpen;
         _cityIconId = cityData.IconId;
-        _loadImage.Initialize(_cityIconId);
+        _loadImage.Initialize($"https://img.icons8.com/?size=100&id={_cityIconId}&format=png&color=000000");
         _loadImage.DownloadComplete += CityElementReady;
     }
 

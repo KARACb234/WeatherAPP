@@ -16,7 +16,7 @@ public static class WeatherUpdate
     {
         string latitudeString = latitude.ToString(CultureInfo.InvariantCulture);
         string longitudeString = longitude.ToString(CultureInfo.InvariantCulture);
-        string weather_url = string.Format("http://api.weatherapi.com/v1/forecast.json?key={0}&q={1},{2}&days={3}&lang={4}", KEY, latitude, longitude, days, lang);
+        string weather_url = string.Format("http://api.weatherapi.com/v1/forecast.json?key={0}&q={1},{2}&days={3}&lang={4}", KEY, latitudeString, longitudeString, days, lang);
         var networkLoader = new NetworkLoader();
         var weatherInfoJson = await networkLoader.LoadingData(weather_url);
         WeatherInfo weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(weatherInfoJson);

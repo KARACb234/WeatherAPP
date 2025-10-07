@@ -1,16 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using JsonData;
 using System;
 using Assets.Scripts;
 using UnityEngine.UI;
 
 public class WelcomeWindow : WindowBase
 {
-    [SerializeField]
-    private TextMeshProUGUI timeText;
     private WelcomePresenter welcomePresenter;
     [SerializeField]
     private CityElementLoader _cityElementLoader;
@@ -42,7 +38,6 @@ public class WelcomeWindow : WindowBase
     }
     private void Update()
     {
-        timeText.SetText($"�����: {DateTime.Now.ToString("HH:mm")}");
 
     }
 

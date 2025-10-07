@@ -1,49 +1,48 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using Newtonsoft.Json.Serialization;
-using DG.Tweening;
-using TMPro;
 using System;
+using Utils;
 
 public class LoadImageToRawImage : MonoBehaviour
 {
     [SerializeField]
     private RawImage _rawImage;
-    [SerializeField]
-    private TextMeshProUGUI _dowloadProgres;
     public Action DownloadComplete;
+    private  TimeSpan duration = new TimeSpan( 30,0, 0, 0);
+    public Gradient tempetureGradient;
     public void Initialize(string iconId)
     {
         StartCoroutine(DownloadImageCoroutine(iconId));
     }
-    void Update()
+    private IEnumerator DownloadImageCoroutine(string URL)
     {
-        
-    }
-    private IEnumerator DownloadImageCoroutine(string iconId)
-    {
-        string imageReference = $"https://img.icons8.com/?size=100&id={iconId}&format=png&color=000000";
-        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageReference))
+        string imageReference = URL;
+        if (ImageCache.TryToLoadTexture(imageReference, duration, out Texture2D texture))
         {
-            request.SendWebRequest();
-            while(request.isDone == false)
+            _rawImage.texture = texture;
+        }
+        else
+        {
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageReference))
             {
-                _dowloadProgres.text = request.downloadProgress.ToString();
-                yield return null;
-            }
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError($"�� ���������� ��������� ��������{request.error}");
-            }
-            else
-            {
-                Texture2D downloadedTexture = DownloadHandlerTexture.GetContent(request);
-                _rawImage.texture = downloadedTexture;
-                _dowloadProgres.gameObject.SetActive(false);
-                DownloadComplete?.Invoke();
+                request.SendWebRequest();
+                while(request.isDone == false)
+                {
+                    yield return null;
+                }
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"�� ���������� ��������� ��������{request.error}");
+                }
+                else
+                {
+                    Texture2D downloadedTexture = DownloadHandlerTexture.GetContent(request);
+                    _rawImage.texture = downloadedTexture;
+                    ImageCache.SaveTexture(downloadedTexture, imageReference);
+                    DownloadComplete?.Invoke();
+                }
             }
         }
     }
