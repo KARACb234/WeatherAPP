@@ -6,6 +6,7 @@ using TMPro;
 using UI.HoursElement;
 using UI.HoursElementScrol;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeatherWindowUI : WindowBase
 {
@@ -36,6 +37,11 @@ public class WeatherWindowUI : WindowBase
     private HourElementCreator _hourElementCreator;
     [SerializeField] 
     private Transform _hourElementsScrol;
+    [SerializeField]
+    private Gradient _backGroundGradient;
+    private decimal _temperature;
+    [SerializeField]
+    private Image _backGroudImage;
     public void Initialize()
     {
         ShowInformatoinPerCureentDay();
@@ -43,6 +49,7 @@ public class WeatherWindowUI : WindowBase
         _weatherByHourPresenter = weatherByHourPresenter;
         HourElementsController hourElementsController = new HourElementsController(_hourElementsScrol, _hourElementCreator);
         _hourElementsController = hourElementsController;
+        ChooseBackGroundColor();
     }
 
     private void OnDestroy()
@@ -52,6 +59,7 @@ public class WeatherWindowUI : WindowBase
     public void ShowInformatoinPerCureentDay()
     {
         var day = WeatherConfig.current;
+        _temperature = day.tempC;
         curentTemperatureText.text = day.tempC.ToString();
         fellingAsText.text = $"Ощущается как {day.feelslike_c.ToString()} °C";
         isCloudText.text = day.condition.text;
@@ -66,5 +74,18 @@ public class WeatherWindowUI : WindowBase
     public void CloseWindow()
     {
         WindowManager.Instance.CloseWindow(this);
+    }
+
+    public void ChooseBackGroundColor()
+    {
+        float temp = Convert.ToSingle(_temperature);
+        temp = Mathf.Clamp(temp, -30, 30);
+        float normalisedTemp = Mathf.InverseLerp(-30, 30, temp);
+        Color color = _backGroundGradient.Evaluate(normalisedTemp);
+        Color.RGBToHSV(color, out float h, out float s, out float v);
+        v = 0.6f;
+        Color newColor = Color.HSVToRGB(h, s, v);
+        _backGroudImage.color = newColor;
+        
     }
 }

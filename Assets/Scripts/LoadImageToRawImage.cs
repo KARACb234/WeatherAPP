@@ -11,7 +11,6 @@ public class LoadImageToRawImage : MonoBehaviour
     private RawImage _rawImage;
     public Action DownloadComplete;
     private  TimeSpan duration = new TimeSpan( 30,0, 0, 0);
-    public Gradient tempetureGradient;
     public void Initialize(string iconId)
     {
         StartCoroutine(DownloadImageCoroutine(iconId));
